@@ -38,11 +38,20 @@ self.addEventListener('fetch', function (event) {
   // B8. TODO - If the request is in the cache, return with the cached version.
   //            Otherwise fetch the resource, add it to the cache, and return
   //            network response.
-    return cache.match(event.request).then((cachedResponse) => {
-      return cachedResponse || fetch(event.request).then((fetchedResponse) => {
-        cache.put(event.request, fetchedResponse.clone());
+    // return cache.match(event.request).then((cachedResponse) => {
+    //   return cachedResponse || fetch(event.request).then((fetchedResponse) => {
+    //     cache.put(event.request, fetchedResponse.clone());
+    //     return fetchedResponse;
+    //   });
+    // });
+    if (cache.has(event.request)) {
+      return cache.match(event.request);
+    }
+    else {
+      const fetchedResponse = fetch(event.request);
+      cache.put(event.request, fetchedResponse.clone()).then(() {
         return fetchedResponse;
-      });
-    });
+      })
+    }
   }))
 });
