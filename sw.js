@@ -49,7 +49,7 @@ self.addEventListener('fetch', function (event) {
     }
     else {
       const fetchedResponse = fetch(event.request);
-      cache.put(event.request, fetchedResponse.clone()).then(() {
+      cache.put(event.request, fetchedResponse.clone()).then(() => {
         return fetchedResponse;
       })
     }
